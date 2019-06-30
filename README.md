@@ -5,10 +5,11 @@ To use, download the .lua files and put them in [Aseprite's user script folder](
 ## Parallax
 
 [parallax.lua](https://raw.githubusercontent.com/TekF/Aseprite-Scripts/master/parallax.lua) right-click and "Save as".
-![gif](https://github.com/TekF/Aseprite-Scripts/blob/master/demos/parallax%20demo.gif)
+![demo](https://github.com/TekF/Aseprite-Scripts/blob/master/demos/parallax%20demo.gif)
 
 By default each layer moves twice as fast as the one below.
 
 To control speed manually, add `s=<speed>` to the layer's name, like this:
 
-![png](https://raw.githubusercontent.com/TekF/Aseprite-Scripts/master/demos/parallax%20layer%20names.png)
+![layer names](https://raw.githubusercontent.com/TekF/Aseprite-Scripts/master/demos/parallax%20layer%20names.png)
+![demo speeds](https://raw.githubusercontent.com/TekF/Aseprite-Scripts/master/demos/parallax%20demo%20speeds.gif)
