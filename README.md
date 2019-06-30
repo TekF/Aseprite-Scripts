@@ -4,4 +4,4 @@ To use, download the .lua files and put them in [Aseprite's user script folder](
 
 ## Parallax
 
-[img=https://raw.githubusercontent.com/TekF/Aseprite-Scripts/master/demos/parallax%20demo.gif]
+
