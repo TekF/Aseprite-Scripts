@@ -4,7 +4,7 @@ To use, download the .lua files and put them in [Aseprite's user script folder](
 
 ## Parallax
 
-[parallax.lua](https://raw.githubusercontent.com/TekF/Aseprite-Scripts/master/parallax.lua) right-click and "Save as".
+[parallax.lua](https://raw.githubusercontent.com/TekF/Aseprite-Scripts/master/parallax.lua) (Right-click and "Save as")
 ![demo](https://github.com/TekF/Aseprite-Scripts/blob/master/demos/parallax%20demo.gif)
 
 By default each layer moves twice as fast as the one below.
