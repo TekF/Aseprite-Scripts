@@ -28,7 +28,7 @@ function Scroll( x, y )
 	for i,layer in ipairs(sprite.layers) do
 		if layer ~= nil then
 			-- read speed value from layer name
-			local speed = tonumber(string.match( layer.name, "s=(%d+)" ))
+			local speed = tonumber(string.match( layer.name, "s=(-?%d+)" ))
 			--deb:label{ label="speed", text=speed }
 
 			if speed == nil then
