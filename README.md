@@ -13,3 +13,9 @@ To control speed manually, add `s=<speed>` to the layer names, like this:
 
 ![layer names](https://raw.githubusercontent.com/TekF/Aseprite-Scripts/master/demos/parallax%20layer%20names.png)
 ![demo speeds](https://raw.githubusercontent.com/TekF/Aseprite-Scripts/master/demos/parallax%20demo%20speeds.gif)
+
+It also supports non-integer speeds. For example a speed of 1.5 will move alternately between moving by 1 pixel or 2 pixels, to give an average movement of 1.5 pixels.
+
+![non-int](https://raw.githubusercontent.com/TekF/Aseprite-Scripts/master/demos/parallax%20non-integers.png)
+![suburban](https://raw.githubusercontent.com/TekF/Aseprite-Scripts/master/demos/parallax%20test%20suburbs.gif)
+
