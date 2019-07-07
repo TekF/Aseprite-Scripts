@@ -18,32 +18,48 @@ local help = Dialog("Help")
 		:newrow()
 		:label{text="  Layer 1 s=3"}
 
+-- keep our own copy of the position, so we can handle sub-pixel movements (cel positions are stored as ints)
+local positions = {}
 
 function Scroll( x, y )
 
 	local sprite = app.activeSprite
 
-	--local deb = Dialog("Debug")   -- alternatively, maybe I can use app.command.DeveloperConsole
+	local deb = nil
+	--deb = Dialog("Debug")   -- alternatively, maybe I can use app.command.DeveloperConsole
 
 	for i,layer in ipairs(sprite.layers) do
 		if layer ~= nil then
 			-- read speed value from layer name
-			local speed = tonumber(string.match( layer.name, "s=(-?%d+)" ))
-			--deb:label{ label="speed", text=speed }
-
+			local speed = tonumber(string.match( layer.name, "s=([0-9%.%-]+)" ))
+			if deb then deb:label{ label="speed", text=tostring(speed) } end
+			
 			if speed == nil then
 				-- default speed: each layer moves twice as fast as the one below
 				speed = 2^(i-1)
 			end
 		
-			local cel = layer:cel(app.activeFrame);
+			local cel = layer:cel(app.activeFrame)
+
 			if cel ~= nil and speed ~= 0 then
-				cel.position = Point( cel.position.x + x*speed, cel.position.y + y*speed )
+			
+				-- get position from array, if not there or != stored one (as int), set from the int
+				local pos = positions[layer.name]
+				if pos == nil or math.floor(pos[1]) ~= cel.position.x or math.floor(pos[2]) ~= cel.position.y then
+					pos = { cel.position.x, cel.position.y }
+				end
+				
+				pos[1] = pos[1] + x*speed
+				pos[2] = pos[2] + y*speed
+
+				cel.position = Point( pos[1], pos[2] )
+				positions[layer.name] = pos
+				
 			end
 		end
 	end
 
-	--deb:show{wait=false}
+	if deb then deb:show{wait=false} end
 	
 	-- AAARGH! need to refresh!
 	app.refresh()
