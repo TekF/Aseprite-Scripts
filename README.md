@@ -19,3 +19,6 @@ It also supports non-integer speeds. For example a speed of 1.5 will move altern
 ![non-int](https://raw.githubusercontent.com/TekF/Aseprite-Scripts/master/demos/parallax%20non-integers.png)
 ![suburban](https://raw.githubusercontent.com/TekF/Aseprite-Scripts/master/demos/parallax%20test%20suburbs.gif)
 
+#### Update
+
+Put "w=x", "w=y", or "w=xy" in the layer name to wrap the layer on the x and/or y axes. It wraps at either the layer bounds or the image bounds - whichever's bigger.
