@@ -39,22 +39,72 @@ function Scroll( x, y )
 				speed = 2^(i-1)
 			end
 		
+			-- read wrap value from layer name
+			local wrapX,wrapY = string.match( layer.name, "w=(x?)(y?)" )
+			if deb then deb:label{ label="wrap", text=tostring(wrapX)..tostring(wrapY) } end
+
+			-- convert them to bools
+			if wrapX=="x" then wrapX = true else wrapX = false end
+			if wrapY=="y" then wrapY = true else wrapY = false end
+			
 			local cel = layer:cel(app.activeFrame)
 
 			if cel ~= nil and speed ~= 0 then
-			
+
 				-- get position from array, if not there or != stored one (as int), set from the int
 				local pos = positions[layer.name]
 				if pos == nil or math.floor(pos[1]) ~= cel.position.x or math.floor(pos[2]) ~= cel.position.y then
+					-- note that these values will go wrong if a layer changes wrap
+					-- but I haven't handled that case because wrap flags are in the layer's name,
+					-- so the code thinks it's a different layer and won't get confused!
 					pos = { cel.position.x, cel.position.y }
+					if wrapX then pos[1] = 0.0 end
+					if wrapY then pos[2] = 0.0 end
 				end
 				
 				pos[1] = pos[1] + x*speed
 				pos[2] = pos[2] + y*speed
 
-				cel.position = Point( pos[1], pos[2] )
-				positions[layer.name] = pos
+				if wrapX or wrapY then
+					local ipos = { math.floor(pos[1]), math.floor(pos[2]) }
+					
+					-- select the area to wrap
+					-- if layer is bigger than the sprite, select that (otherwise assume they don't want weird wrapping within a small area)
+					local bounds = sprite.bounds:union(Rectangle(cel.bounds))
+					sprite.selection = Selection(bounds)
+					
+					-- set the layer it's working on (don't seem to be able to specify this, so set the app's current layer
+					app.activeLayer = layer -- it doesn't say I can do this, but it doesn't seem to mind
+
+					-- these ifs are SILLY! Just give me a 2D input!
+					if wrapX and ipos[1] ~= 0 then
+						if ipos[1] > 0 then
+							app.command.MoveMask{ target="content", direction="right", units="pixel", quantity=ipos[1], wrap=true }
+						else
+							app.command.MoveMask{ target="content", direction="left", units="pixel", quantity=-ipos[1], wrap=true }
+						end
+						pos[1] = pos[1]-ipos[1]
+					end
+					if wrapY and ipos[2] ~= 0 then
+						if ipos[2] > 0 then
+							app.command.MoveMask{ target="content", direction="down", units="pixel", quantity=ipos[2], wrap=true }
+						else
+							app.command.MoveMask{ target="content", direction="up", units="pixel", quantity=-ipos[2], wrap=true }
+						end
+						pos[2] = pos[2]-ipos[2]
+					end
+					app.command.DeselectMask()
+				end
 				
+				if not wrapX and not wrapY then
+					cel.position = Point( pos[1], pos[2] )
+				else if not wrapX then
+					cel.position = Point( pos[1], cel.position.y )
+				else if not wrapY then
+					cel.position = Point( cel.position.x, pos[2] )
+				end end end
+				
+				positions[layer.name] = pos
 			end
 		end
 	end
